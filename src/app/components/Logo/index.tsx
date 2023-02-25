@@ -1,7 +1,28 @@
-import Image from 'next/image'
+import Image from "next/image";
 
-export function Logo() {
+interface LogoProps {
+  height?: number;
+  width?: number;
+}
+
+export function Logo(props: LogoProps) {
+  if (props.height && props.width) {
     return (
-      <Image src="../../../../public/logo.svg" alt="logo" height={500} width={500}></Image>
+      <Image
+        src="/logo.png"
+        alt="logo"
+        height={props.height}
+        width={props.width}
+      ></Image>
     );
+  }
+  return (
+    
+      <Image
+        src="/logo.png"
+        alt="logo"
+        fill
+        object-fit="contain"
+      ></Image>
+  );
 }
