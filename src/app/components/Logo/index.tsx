@@ -10,7 +10,7 @@ export function Logo(props: LogoProps) {
     return (
       <Image
         src="/logo.png"
-        alt="logo"
+        alt="logo" 
         height={props.height}
         width={props.width}
       ></Image>
