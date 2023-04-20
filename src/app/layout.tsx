@@ -1,5 +1,6 @@
 import { Navbar } from "./components/Navbar";
 import "./globals.css";
+import { UserProvider } from "./user/store";
 
 export const metadata = {
   title: "KoinMarket",
@@ -12,12 +13,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    
+  <UserProvider>
     <html lang="en">
       <body>
-        <Navbar></Navbar>
-
+          <Navbar/>
         {children}
       </body>
-    </html>
+    </html></UserProvider>
   );
 }

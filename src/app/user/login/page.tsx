@@ -1,7 +1,17 @@
 "use client";
-import Link from 'next/link';
-import { Box, Button, TextField, Typography } from "@mui/material";
-import { useReducer } from 'react';
+import Link from "next/link";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  LinearProgress,
+} from "@mui/material";
+import { useReducer, useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "@/app/constants/backendURL";
+import { UserData } from "@/app/interfaces/UserData";
+import { useUser } from "../store";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -25,13 +35,13 @@ function validationReducer(
       return {
         ...state,
         isValid: false,
-        validationMessage:" Entered password is wrong",
+        validationMessage: " Entered password is wrong",
       };
     case "notExist":
       return {
         ...state,
         isValid: false,
-        validationMessage:"Entered username or email is wrong",
+        validationMessage: "Entered username or email is wrong",
       };
     case "valid":
       return { ...state, isValid: true, validationMessage: "" };
@@ -41,11 +51,16 @@ function validationReducer(
 }
 
 export default function Page() {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {user, setUser} = useUser();
+
   const [usernameValidation, userNameDispatch] = useReducer(validationReducer, {
     isValid: true,
     validationMessage: "",
   });
-  
+
   const [passwordValidation, passwordDispatch] = useReducer(validationReducer, {
     isValid: true,
     validationMessage: "",
@@ -62,7 +77,6 @@ export default function Page() {
       });
     }
   }
-  
 
   function handlePassword(password: string) {
     if (password.length < 8) {
@@ -77,64 +91,95 @@ export default function Page() {
   }
 
   function handleSubmit() {
-
+    setIsLoading(true);
+    axios({
+      url: BASE_URL + "login",
+      method: "POST",
+      data: {
+        "username": username,
+        "password": password,
+      },
+      withCredentials: false,
+    })
+      .then((res) => {
+        var user: UserData = {
+          id: res.data.user.id,
+          token: res.data.token,
+          username: res.data.user.username,
+          emailAddress: res.data.user.emailAddress,
+        };
+        setUser(user);
+      })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
   }
 
-
-  return (
-    <Box
-      component="form"
-      sx={{
-        height: "calc(100% - 64px)",
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      onSubmit = {handleSubmit}
-    >
+  if (isLoading) {
+    return <LinearProgress />;
+  } else {
+    return (
       <Box
+        component="form"
         sx={{
-          height: { xs: "30%", sm: "20%" },
-          width: { xs: "80%", sm: "70%", md: "60%", lg: "40%" },
+          height: "calc(100% - 64px)",
+          width: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
         }}
+        onSubmit={handleSubmit}
       >
-        <TextField
+        <Box
           sx={{
-            width: "100%",
+            height: { xs: "30%", sm: "20%" },
+            width: { xs: "80%", sm: "70%", md: "60%", lg: "40%" },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
-          error={!usernameValidation.isValid}
-          helperText={usernameValidation.validationMessage}
-          label="Username"
-        />
-        <TextField
-          sx={{
-            width: "100%",
-          }}
-          error={!passwordValidation.isValid}
-          helperText={passwordValidation.validationMessage}
-          label="Password"
-          type="password"
-        />
-        <Button
-          sx={{
-            width: "50%",
-          }}
-          variant="contained"
-          type="submit"
         >
-          LogIn
-        </Button>
+          <TextField
+            sx={{
+              width: "100%",
+            }}
+            error={!usernameValidation.isValid}
+            helperText={usernameValidation.validationMessage}
+            label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
+            sx={{
+              width: "100%",
+            }}
+            error={!passwordValidation.isValid}
+            helperText={passwordValidation.validationMessage}
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button
+            sx={{
+              width: "50%",
+            }}
+            variant="contained"
+            type="submit"
+          >
+            LogIn
+          </Button>
+        </Box>
+        <Typography sx={{ mt: "20px" }}>
+          Do not have an account? <Link href="/user/register">Sign Up!</Link>
+        </Typography>
       </Box>
-      <Typography sx={{mt:"20px"}}>
-        Do not have an account? <Link href="/user/register">Sign Up!</Link>
-      </Typography>
-    </Box>
-  );
+    );
+  }
 }
-

@@ -1,4 +1,5 @@
-import { createContext, ReactComponentElement, useContext, useState } from "react";
+"use client"
+import { createContext, useContext, useState } from "react";
 import { UserData } from "../interfaces/UserData";
 
 type UserContextType = {
@@ -13,9 +14,13 @@ export function useUser() {
   return { user, setUser };
 }
 
+type Props = {
+    children: React.ReactNode;
+}
+
 export function UserProvider(
-  children: React.ReactNode
+  props: Props
 ) {
   const [user, setUser ] = useState<UserData | null>(null);
-  <UserContext.Provider value={{user: user, setUser: setUser}}>{children}</UserContext.Provider>;
+  return (<UserContext.Provider value={{user: user, setUser: setUser}}>{props.children}</UserContext.Provider>);
 }
