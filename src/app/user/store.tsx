@@ -1,5 +1,21 @@
-import { BASE_URL } from "../constants/backendURL";
+import { createContext, ReactComponentElement, useContext, useState } from "react";
+import { UserData } from "../interfaces/UserData";
 
-export const REGISTER_URL : string = BASE_URL + "register";
-export const LOGIN_URL : string = BASE_URL + "login";
-export const LOGOUT_URL : string = BASE_URL + "logout";
+type UserContextType = {
+    user : UserData | null;
+    setUser: (user:UserData)=>void ;
+} ;
+
+const UserContext = createContext<UserContextType>({user: null, setUser: (user:UserData)=>{}});
+
+export function useUser() {
+  const {user, setUser} = useContext(UserContext);
+  return { user, setUser };
+}
+
+export function UserProvider(
+  children: React.ReactNode
+) {
+  const [user, setUser ] = useState<UserData | null>(null);
+  <UserContext.Provider value={{user: user, setUser: setUser}}>{children}</UserContext.Provider>;
+}
