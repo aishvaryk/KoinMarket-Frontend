@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/components/TradingView/TechnicalAnalysis/index.jsx", "src/app/components/TradingView/Chart/index.jsx"],
   "exclude": ["node_modules"]
 }

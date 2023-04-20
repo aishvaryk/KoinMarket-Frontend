@@ -1,8 +1,16 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 's2.coinmarketcap.com',
+        port: '',
+      },
+    ],
+  },
   experimental: {
     appDir: true,
   },
 }
-
-module.exports = nextConfig
