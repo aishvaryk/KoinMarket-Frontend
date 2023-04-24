@@ -54,6 +54,6 @@ export function UserProvider(
           console.log(err);
         });
     }
-  }, [user, user?.id]);
+  }, [user?.id]);
   return (<UserContext.Provider value={{user: user, setUser: setUser}}>{props.children}</UserContext.Provider>);
 }
