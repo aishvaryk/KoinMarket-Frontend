@@ -5,6 +5,8 @@ import axios from "axios";
 import { BASE_URL } from "@/app/constants/backendURL";
 import { UserData } from "@/app/interfaces/UserData";
 import { useUser } from "../store";
+import Cookies from "js-cookie";
+import { useRouter } from 'next/navigation';
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -55,6 +57,7 @@ export default function Page() {
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user, setUser } = useUser();
+  const router = useRouter();
 
   const [usernameValidation, userNameDispatch] = useReducer(validationReducer, {
     isValid: true,
@@ -72,6 +75,7 @@ export default function Page() {
   });
 
   function handleUsername(username: string) {
+    console.log(username);
     if (username.length < 8) {
       userNameDispatch({
         type: "shortLength",
@@ -88,6 +92,7 @@ export default function Page() {
   }
 
   function handleEmail(email: string) {
+    console.log(email);
     if (!email.match(EMAIL_REGEX)) {
       emailDispatch({
         type: "invalidEmail",
@@ -104,6 +109,7 @@ export default function Page() {
   }
 
   function handlePassword(password: string) {
+    console.log(password);
     if (password.length < 8) {
       passwordDispatch({
         type: "shortLength",
@@ -120,6 +126,7 @@ export default function Page() {
   }
 
   function handleSubmit() {
+    console.log(username, email, password);
     setIsLoading(true);
     axios({
       url: BASE_URL + "register",
@@ -138,10 +145,12 @@ export default function Page() {
           username: res.data.user.username,
           emailAddress: res.data.user.emailAddress,
         };
-        setUser(user);
+        Cookies.set("jwt", res.data.token);
+        router.replace("/");
       })
       .then(() => {
         setIsLoading(false);
+        setUser(user);
       })
       .catch((err) => {
         setIsLoading(false);
