@@ -18,11 +18,9 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FlexBox } from "../global/FlexBox";
 import { BASE_URL } from "../../constants/backendURL";
 import { visuallyHidden } from "@mui/utils";
 import Link from "next/link";
-import { authToken } from "@/app/constants/authToken";
   
 
 const TABLE_HEAD = [
@@ -104,11 +102,7 @@ export function CryptoTable() {
         count: numOfRows,
         orderBy: sort.sortBy,
         direction: sort.direction,
-      },
-      withCredentials: false,
-      headers: {
-        Authorization: "Bearer " + authToken,
-      },
+      }
     })
       .then((res) => {
         setRows(res.data);
@@ -138,7 +132,7 @@ export function CryptoTable() {
   if (isLoading) return <LinearProgress />;
   else {
     return (
-      <FlexBox justify="center" height="auto" customStyle={{ mt: "20px" }}>
+      <Box sx={{ mt: "20px", display:"flex", justifyContent: "space-between", flexDirection:"column", alignItems: "center"}}>
         <TableContainer
           component={Paper}
           sx={{ width: "80%", display: isLoading ? "none" : "block" }}
@@ -205,7 +199,7 @@ export function CryptoTable() {
           sx={{ display: isLoading ? "none" : "block" }}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </FlexBox>
+      </Box>
     );
   }
 }
