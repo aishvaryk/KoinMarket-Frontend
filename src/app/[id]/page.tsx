@@ -7,15 +7,12 @@ import { Box, LinearProgress, Typography, Paper } from "@mui/material";
 import { BASE_URL } from "../constants/backendURL";
 import TradingViewChartWidget from "../components/TradingView/Chart";
 import { MetaData } from "../interfaces/MetaData";
-import { authToken } from "../constants/authToken";
 import {Language, Twitter, Reddit} from '@mui/icons-material';
 import Link from "next/link";
 
 export default function CoinDetails({ params }: { params: { id: number } }) {
-  console.log("Rendered Metadata");
   
   const [isLoading, setIsLoading] = useState<Boolean>(true);
-  
   const [metadata, setMetadata] = useState<MetaData>({
     id: params.id,
     symbol: "",
@@ -33,10 +30,7 @@ export default function CoinDetails({ params }: { params: { id: number } }) {
       method: "GET",
       params: {
         ids: params.id,
-      },
-      headers: {
-        Authorization: "Bearer " + authToken,
-      },
+      }
     })
       .then((res) => {
         var metadataResponse: MetaData = res.data[0];
