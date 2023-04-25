@@ -95,7 +95,6 @@ export default function Page() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log(" login submit");
     setIsLoading(true);
     axios({
       url: BASE_URL + "login",
@@ -107,7 +106,6 @@ export default function Page() {
       withCredentials: false,
     })
       .then((res) => {
-        console.log(res);
         var user: UserData = {
           id: res.data.user.id,
           token: res.data.token,
@@ -117,7 +115,6 @@ export default function Page() {
         Cookies.set("jwt", res.data.token);
       })
       .then(() => {
-        console.log("after login submit, set user");
         setUser(user);
         setIsLoading(false);
         router.replace("/");

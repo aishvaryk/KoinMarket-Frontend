@@ -41,7 +41,7 @@ export default function UserAvatar() {
   }, [user]);
 
   if (user) {
-    return <Avatar {...stringAvatar(user.username)} />;
+    return <Avatar {...stringAvatarCallback(user.username)} />;
   } else {
     return <Avatar alt="No User" />;
   }

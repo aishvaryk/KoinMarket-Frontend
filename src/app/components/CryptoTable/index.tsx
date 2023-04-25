@@ -42,7 +42,7 @@ type direction = "asc" | "desc";
 export function CryptoTable() {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [pageNo, setPageNo] = useState<number>(0);
-  const [numOfRows, setNumOfRows] = useState<number>(10);
+  const [numOfRows, setNumOfRows] = useState<number>(20);
   const [sort, setSort] = useState<listingSort>({
     sortBy: "rank",
     direction: "asc",
@@ -149,7 +149,7 @@ export function CryptoTable() {
                     <Link
                     key={row.id}
                     href={"/" + row.id}
-                    style={{ textDecoration: "none", color:"rgba(0, 0, 0, 0.87)" }}
+                    style={{ textDecoration: "none", color:"rgba(0, 0, 0, 0.87)", display: "flex", alignItems: "center" }}
                   >
                       <Image
                         src={row.logoURL}
