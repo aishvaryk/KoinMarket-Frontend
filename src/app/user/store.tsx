@@ -1,32 +1,33 @@
-"use client"
+"use client";
 import { createContext, useContext, useEffect, useState } from "react";
 import { UserData } from "../interfaces/UserData";
 import { BASE_URL } from "@/app/constants/backendURL";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import axios from "axios";
 
 type UserContextType = {
-    user : UserData | null;
-    setUser: (user:UserData| null)=>void ;
-} ;
+  user: UserData | null;
+  setUser: (user: UserData | null) => void;
+};
 
-const UserContext = createContext<UserContextType>({user: null, setUser: (user:UserData | null)=>{}});
+const UserContext = createContext<UserContextType>({
+  user: null,
+  setUser: (user: UserData | null) => {},
+});
 
 export function useUser() {
-  const {user, setUser} = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   return { user, setUser };
 }
 
 type Props = {
-    children: React.ReactNode;
-}
+  children: React.ReactNode;
+};
 
-export function UserProvider(
-  props: Props
-) {
-  const [user, setUser ] = useState<UserData | null>(null);
+export function UserProvider(props: Props) {
+  const [user, setUser] = useState<UserData | null>(null);
   console.log("user provider");
-  useEffect(()=>{
+  useEffect(() => {
     console.log(user, "useEffect useUser");
     var jwt = Cookies.get("jwt");
     if (jwt) {
@@ -39,15 +40,15 @@ export function UserProvider(
         },
       })
         .then((res) => {
-          console.log("verified user", res, jwt)
+          console.log("verified user", res, jwt);
           var user: UserData = {
             id: res.data.id,
-            token: jwt? jwt: "",
+            token: jwt ? jwt : "",
             username: res.data.username,
             emailAddress: res.data.emailAddress,
           };
           setUser(user);
-          console.log(user, "user")
+          console.log(user, "user");
         })
         .catch((err) => {
           setUser(null);
@@ -55,5 +56,9 @@ export function UserProvider(
         });
     }
   }, [user?.id]);
-  return (<UserContext.Provider value={{user: user, setUser: setUser}}>{props.children}</UserContext.Provider>);
+  return (
+    <UserContext.Provider value={{ user: user, setUser: setUser }}>
+      {props.children}
+    </UserContext.Provider>
+  );
 }

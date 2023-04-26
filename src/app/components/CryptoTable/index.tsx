@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants/backendURL";
 import { visuallyHidden } from "@mui/utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
   
 
 const TABLE_HEAD = [
@@ -48,6 +49,7 @@ export function CryptoTable() {
     direction: "asc",
   });
   const [rows, setRows] = useState<ListingData[]>([]);
+  const router = useRouter();
 
   function getActiveHeadAndDirection(sort: listingSort): {
     activeHead: string;
@@ -112,6 +114,7 @@ export function CryptoTable() {
       })
       .catch((err) => {
         console.log(err);
+        router.replace("/error");
       });
   }, [pageNo, numOfRows, sort]);
 
