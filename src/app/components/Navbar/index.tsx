@@ -36,7 +36,7 @@ const NO_USER_MENU: NavbarMenuOption[] = [
 const WITH_USER_MENU: NavbarMenuOption[] = [
   {
     name: "Watchlists",
-    url: "/watchlists",
+    url: "/user/watchlists",
   },
   {
     name: "Logout",
