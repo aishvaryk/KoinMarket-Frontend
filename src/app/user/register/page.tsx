@@ -6,7 +6,7 @@ import { BASE_URL } from "@/app/constants/backendURL";
 import { UserData } from "@/app/interfaces/UserData";
 import { useUser } from "../store";
 import Cookies from "js-cookie";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -146,11 +146,14 @@ export default function Page() {
           emailAddress: res.data.user.emailAddress,
         };
         Cookies.set("jwt", res.data.token);
-        router.replace("/");
+        return user;
       })
-      .then(() => {
-        setIsLoading(false);
+      .then((user: UserData) => {
         setUser(user);
+        setTimeout(() => {
+          setIsLoading(false);
+          router.replace("/");
+        }, 500);
       })
       .catch((err) => {
         setIsLoading(false);

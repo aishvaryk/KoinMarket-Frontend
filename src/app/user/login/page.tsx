@@ -12,7 +12,7 @@ import axios from "axios";
 import { BASE_URL } from "@/app/constants/backendURL";
 import { UserData } from "@/app/interfaces/UserData";
 import { useUser } from "../store";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
 const EMAIL_REGEX =
@@ -56,7 +56,7 @@ export default function Page() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {user, setUser} = useUser();
+  const { user, setUser } = useUser();
   const router = useRouter();
 
   const [usernameValidation, userNameDispatch] = useReducer(validationReducer, {
@@ -95,19 +95,17 @@ export default function Page() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log(" login submit");
     setIsLoading(true);
     axios({
       url: BASE_URL + "login",
       method: "POST",
       data: {
-        "username": username,
-        "password": password,
+        username: username,
+        password: password,
       },
       withCredentials: false,
     })
       .then((res) => {
-        console.log(res);
         var user: UserData = {
           id: res.data.user.id,
           token: res.data.token,
@@ -115,12 +113,13 @@ export default function Page() {
           emailAddress: res.data.user.emailAddress,
         };
         Cookies.set("jwt", res.data.token);
+        return user;
       })
-      .then(() => {
-        console.log("after login submit, set user");
+      .then((user: UserData) => {
         setUser(user);
-        setIsLoading(false);
-        router.replace("/");
+        setTimeout(() => {
+          router.replace("/");
+        }, 500);
       })
       .catch((err) => {
         setIsLoading(false);

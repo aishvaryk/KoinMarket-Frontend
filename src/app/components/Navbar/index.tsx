@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "../Logo";
 import UserAvatar from "../UserAvatar";
 
@@ -36,7 +36,7 @@ const NO_USER_MENU: NavbarMenuOption[] = [
 const WITH_USER_MENU: NavbarMenuOption[] = [
   {
     name: "Watchlists",
-    url: "/watchlists",
+    url: "/user/watchlists",
   },
   {
     name: "Logout",
@@ -47,6 +47,9 @@ const WITH_USER_MENU: NavbarMenuOption[] = [
 export function Navbar() {
   const { user, setUser } = useUser();
   const [userMenu, setUserMenu] = useState(NO_USER_MENU);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
+    null
+  );
 
   useEffect(() => {
     if (user) {
@@ -73,9 +76,6 @@ export function Navbar() {
     }
   }, [user]);
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);

@@ -38,10 +38,10 @@ export default function UserAvatar() {
 
   const stringAvatarCallback = useCallback((name: string)=>{
     return stringAvatar(name);
-  }, [user]);
+  }, []);
 
   if (user) {
-    return <Avatar {...stringAvatar(user.username)} />;
+    return <Avatar {...stringAvatarCallback(user.username)} />;
   } else {
     return <Avatar alt="No User" />;
   }
