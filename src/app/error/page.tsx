@@ -8,15 +8,17 @@ export type Error = {
   message: string | null;
 };
 
+type errorProps = {
+  errorProp?: any;
+  children?: React.ReactNode;
+}
+
 function errObjToError(errObj: string): Error {
   errObj = JSON.parse(errObj);
   return { code: "unknown", message: null };
 }
 
-export default function ErrorPage(props: {
-  errorProp: any;
-  children?: React.ReactNode;
-}) {
+export default function ErrorPage(props: errorProps) {
   const [error, setError] = useState<Error>({ code: "unknown", message: null });
 
   return (
