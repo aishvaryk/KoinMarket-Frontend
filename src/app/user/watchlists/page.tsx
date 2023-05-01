@@ -123,8 +123,10 @@ export default function Wishlists() {
           setWatchlists(watchlists);
         })
         .then(() => {
-          console.log(watchlists)
-          if (watchlists.length > 0) { setActiveWatchlist(watchlists[0]);}
+          console.log(watchlists);
+          if (watchlists.length > 0) {
+            setActiveWatchlist(watchlists[0]);
+          }
         })
         .catch((err) => {
           setIsLoading(false);
@@ -142,16 +144,20 @@ export default function Wishlists() {
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
         <Box sx={{ display: "flex", justifyContent: "start" }}>
-          {watchlists.map((watchlist) => {
-            return (
-              <Chip
-                label={watchlist.name}
-                key={watchlist.id}
-                onClick={handleClick(watchlist)}
-                variant={getChipVariant(watchlist.id)}
-              />
-            );
-          })}
+          {watchlists.length === 0 ? (
+            watchlists.map((watchlist) => {
+              return (
+                <Chip
+                  label={watchlist.name}
+                  key={watchlist.id}
+                  onClick={handleClick(watchlist)}
+                  variant={getChipVariant(watchlist.id)}
+                />
+              );
+            })
+          ) : (
+            <></>
+          )}
           <Chip
             label={"Add Watchlist"}
             icon={<AddIcon />}
@@ -177,9 +183,12 @@ export default function Wishlists() {
             </DialogActions>
           </Dialog>
         </Box>
-        <Box sx={{ width: "80%"}}>
-          {activeWatchlist.list.length===0 ? <Typography>Watchlist is empty!</Typography> : <CryptoTable listings={activeWatchlist.list}></CryptoTable>}
-          
+        <Box sx={{ width: "80%" }}>
+          {activeWatchlist.list.length === 0 ? (
+            <Typography>Watchlist is empty!</Typography>
+          ) : (
+            <CryptoTable listings={activeWatchlist.list}></CryptoTable>
+          )}
         </Box>
         {alertVisible ? (
           <Alert severity="error" onClose={closeAlert}>

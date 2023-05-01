@@ -104,10 +104,8 @@ export function CryptoTable(props: {
   }
 
   useEffect(() => {
-    console.log("table render")
     if (props.listings) {
-      console.log("table render")
-      console.log(props.listings)
+      console.log("table render");
       setRows(props.listings);
       setIsLoading(false);
     } else {
@@ -124,9 +122,6 @@ export function CryptoTable(props: {
       })
         .then((res) => {
           setRows(res.data);
-        })
-        .then(() => {
-          setIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -149,7 +144,17 @@ export function CryptoTable(props: {
     setPageNo(0);
   }
 
-  if (isLoading) return( <> {props.listings ?  <LinearProgress sx={{mt:"20px", width: "100%"}}/> :<LinearProgress />}</>);
+  if (isLoading || rows.length === 0)
+    return (
+      <>
+        {" "}
+        {props.listings ? (
+          <LinearProgress sx={{ mt: "20px", width: "100%" }} />
+        ) : (
+          <LinearProgress />
+        )}
+      </>
+    );
   else {
     return (
       <Box
@@ -159,14 +164,14 @@ export function CryptoTable(props: {
           justifyContent: "space-between",
           flexDirection: "column",
           alignItems: "center",
-          width:"100%"
+          width: "100%",
         }}
       >
         <TableContainer
           component={Paper}
           sx={{ width: "80%", display: isLoading ? "none" : "block" }}
         >
-          <Table sx={{ width: "100%" }}>
+          <Table stickyHeader sx={{ width: "100%" }}>
             <TableHead>
               <TableRow>{tableHead()}</TableRow>
             </TableHead>
@@ -233,7 +238,7 @@ export function CryptoTable(props: {
             sx={{ display: isLoading ? "none" : "block" }}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        ) : ( 
+        ) : (
           <></>
         )}
       </Box>
