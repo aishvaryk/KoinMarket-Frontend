@@ -15,7 +15,7 @@ function errObjToError(errObj: string): Error {
 
 export default function ErrorPage(props: {
   errorProp: any;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   const [error, setError] = useState<Error>({ code: "unknown", message: null });
 
