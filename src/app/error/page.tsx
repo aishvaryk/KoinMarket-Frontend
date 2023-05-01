@@ -7,8 +7,7 @@ export type Error = {
   code: string;
   message: string | null;
 };
-
-type errorProps = {
+interface errorProps {
   errorProp?: any;
   children?: React.ReactNode;
 }
