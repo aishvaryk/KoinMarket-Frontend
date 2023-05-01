@@ -105,7 +105,6 @@ export function CryptoTable(props: {
 
   useEffect(() => {
     if (props.listings) {
-      console.log("table render");
       setRows(props.listings);
       setIsLoading(false);
     } else {
@@ -122,10 +121,11 @@ export function CryptoTable(props: {
       })
         .then((res) => {
           setRows(res.data);
+          setIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          router.replace("/error");
+          router.replace("/error/500");
         });
     }
   }, [pageNo, numOfRows, sort, props.listings]);

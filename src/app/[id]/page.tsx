@@ -59,7 +59,7 @@ export default function CoinDetails({ params }: { params: { id: number } }) {
       })
       .catch((err) => {
         console.log(err);
-        router.replace("/error");
+        router.replace("/error/500");
       });
   }, []);
 
