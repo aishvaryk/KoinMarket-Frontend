@@ -1,2 +1,0 @@
-export const authToken: string =
-"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG0iLCJpYXQiOjE2ODE4MjQzNjUsImV4cCI6MTY4MTkxMDc2NX0.OJ2iVKMtDwrJ_b1xjsgCwXs6P0CjPTtD_PX7qATFWHg";
