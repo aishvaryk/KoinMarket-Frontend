@@ -144,7 +144,7 @@ export default function Wishlists() {
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
         <Box sx={{ display: "flex", justifyContent: "start" }}>
-          {watchlists.length === 0 ? (
+          {watchlists.length !== 0 ? (
             watchlists.map((watchlist) => {
               return (
                 <Chip
