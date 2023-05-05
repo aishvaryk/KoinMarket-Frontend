@@ -121,6 +121,8 @@ export function CryptoTable(props: {
       })
         .then((res) => {
           setRows(res.data);
+        })
+        .then(()=>{
           setIsLoading(false);
         })
         .catch((err) => {
@@ -169,14 +171,14 @@ export function CryptoTable(props: {
       >
         <TableContainer
           component={Paper}
-          sx={{ width: "80%", display: isLoading ? "none" : "block" }}
+          sx={{ width: "80%" }}
         >
           <Table stickyHeader sx={{ width: "100%" }}>
             <TableHead>
               <TableRow>{tableHead()}</TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {Array.isArray(rows) ? rows.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell sx={{ display: "flex" }}>
                     <Link
@@ -224,7 +226,7 @@ export function CryptoTable(props: {
                     </Typography>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))  : <></>}
             </TableBody>
           </Table>
         </TableContainer>
