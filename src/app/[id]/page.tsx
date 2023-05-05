@@ -113,9 +113,11 @@ export default function CoinDetails({ params }: { params: { id: number } }) {
     })
       .then((res) => {
         console.log("added");
+        setAnchorElMenu(null);
       })
       .catch((err) => {
         console.log(err);
+        setAnchorElMenu(null);
       });
   }
 
