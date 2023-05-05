@@ -66,7 +66,7 @@ export default function CoinDetails({ params }: { params: { id: number } }) {
   useEffect(() => {
     if (user) {
       axios({
-        url: BASE_URL + "watchlist/all",
+        url: BASE_URL + "watchlists/all",
         method: "GET",
         headers: {
           Authorization: "Bearer " + user?.token,
@@ -99,9 +99,9 @@ export default function CoinDetails({ params }: { params: { id: number } }) {
     setAnchorElMenu(null);
   };
 
-  const handleMenuItemClick = (watchlistId: number)  => { 
+  const handleMenuItemClick = (watchlistId: number)  => {
     axios({
-      url: BASE_URL + "watchlist/" + watchlistId + "/add",
+      url: BASE_URL + "watchlists/watchlist/" + watchlistId + "/add",
       method: "PUT",
       headers: {
         Authorization: "Bearer " + user?.token,

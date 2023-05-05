@@ -68,8 +68,8 @@ export default function Wishlists() {
     setOpen(false);
     setIsLoading(true);
     axios({
-      url: BASE_URL + "watchlist/add",
-      method: "GET",
+      url: BASE_URL + "watchlists/add",
+      method: "POST",
       params: {
         name: newWatchlistName,
       },
@@ -102,7 +102,7 @@ export default function Wishlists() {
   useEffect(() => {
     if (user) {
       axios({
-        url: BASE_URL + "watchlist/all",
+        url: BASE_URL + "watchlists/all",
         method: "GET",
         headers: {
           Authorization: "Bearer " + user?.token,
