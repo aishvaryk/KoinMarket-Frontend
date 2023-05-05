@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { Watchlist } from "@/app/interfaces/Watchlist";
 import AddIcon from "@mui/icons-material/Add";
 import { CryptoTable } from "@/app/components/CryptoTable";
+import { DeleteForeverOutlined } from "@mui/icons-material";
 
 export default function Wishlists() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -63,13 +64,47 @@ export default function Wishlists() {
   function closeAlert() {
     setAlertVisible(false);
   }
+  function deleteWatchlist(watchlist: Watchlist) {
+    setIsLoading(true);
+    axios({
+      url: BASE_URL + "watchlists/delete",
+      method: "DELETE",
+      params: {
+        id: watchlist.id,
+      },
+      withCredentials: false,
+      headers: {
+        Authorization: "Bearer " + user?.token,
+      },
+    })
+      .then(() => {
+        let activeWatchlistIndex = watchlists.indexOf(activeWatchlist);
+        if (activeWatchlistIndex > -1) {
+          watchlists.splice(activeWatchlistIndex, 1);
+        }
+        setActiveWatchlist({
+          id: -1,
+          name: "",
+          list: [],
+        });
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setAlertVisible(true);
+        setIsLoading(false);
+        setTimeout(() => {
+          closeAlert();
+        }, 3000);
+      });
+  }
 
   function handleAddWatchlist() {
     setOpen(false);
     setIsLoading(true);
     axios({
-      url: BASE_URL + "watchlist/add",
-      method: "GET",
+      url: BASE_URL + "watchlists/add",
+      method: "POST",
       params: {
         name: newWatchlistName,
       },
@@ -102,7 +137,7 @@ export default function Wishlists() {
   useEffect(() => {
     if (user) {
       axios({
-        url: BASE_URL + "watchlist/all",
+        url: BASE_URL + "watchlists/all",
         method: "GET",
         headers: {
           Authorization: "Bearer " + user?.token,
@@ -187,12 +222,20 @@ export default function Wishlists() {
           {activeWatchlist.list.length === 0 ? (
             <Typography>Watchlist is empty!</Typography>
           ) : (
-            <CryptoTable listings={activeWatchlist.list}></CryptoTable>
+            <>
+              <Button
+                onClick={() => deleteWatchlist(activeWatchlist)}
+                color="error"
+              >
+                <DeleteForeverOutlined /> Delete Watchlist
+              </Button>
+              <CryptoTable listings={activeWatchlist.list}></CryptoTable>
+            </>
           )}
         </Box>
         {alertVisible ? (
           <Alert severity="error" onClose={closeAlert}>
-            Error adding a watchlist
+            Internal Server Error
           </Alert>
         ) : (
           <></>
