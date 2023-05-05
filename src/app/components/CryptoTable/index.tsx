@@ -32,6 +32,14 @@ const TABLE_HEAD = [
   "CHANGE (7d)",
 ];
 
+type tableHead =
+  | "NAME"
+  | "MARKET CAP"
+  | "PRICE (USD)"
+  | "CIRCULATING SUPPLY"
+  | "CHANGE (24h)"
+  | "CHANGE (7d)";
+
 type listingSort = {
   sortBy: "name" | "rank" | "circulatingSupply";
   direction: direction;
@@ -60,15 +68,54 @@ export function CryptoTable(props: {
     switch (sort.sortBy) {
       case "name":
         return { activeHead: "NAME", direction: sort.direction };
+        break;
       case "rank":
         return {
           activeHead: "MARKET CAP",
           direction: sort.direction === "asc" ? "desc" : "asc",
         };
+        break;
       case "circulatingSupply":
         return { activeHead: "CIRCULATING SUPPLY", direction: sort.direction };
+        break;
       default:
         return { activeHead: "MARKET CAP", direction: "desc" };
+        break;
+    }
+  }
+
+  function handleTableHeadClick(head: tableHead) {
+    switch (head) {
+      case "NAME":
+        setSort({
+          sortBy: "name",
+          direction:
+            sort.sortBy === "name" && sort.direction === "asc" ? "desc" : "asc",
+        });
+        break;
+      case "MARKET CAP":
+        setSort({
+          sortBy: "rank",
+          direction:
+            sort.sortBy === "rank" && sort.direction === "asc" ? "desc" : "asc",
+        });
+        break;
+
+      case "CIRCULATING SUPPLY":
+        setSort({
+          sortBy: "circulatingSupply",
+          direction:
+            sort.sortBy === "circulatingSupply" && sort.direction === "asc"
+              ? "desc"
+              : "asc",
+        });
+        break;
+      default:
+        setSort({
+          sortBy: "rank",
+          direction: "asc",
+        });
+        break;
     }
   }
 
@@ -81,18 +128,24 @@ export function CryptoTable(props: {
         var active: boolean = activeHead === head;
         return (
           <TableCell key={head}>
-            <TableSortLabel
-              active={active}
-              direction={direction}
-              onClick={() => null}
-            >
-              {head}
-              {active ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {sort.direction}
-                </Box>
-              ) : null}
-            </TableSortLabel>
+            {head === "NAME" ||
+            head === "MARKET CAP" ||
+            head === "CIRCULATING SUPPLY" ? (
+              <TableSortLabel
+                active={active}
+                direction={direction}
+                onClick={() => handleTableHeadClick(head)}
+              >
+                {head}
+                {active ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {sort.direction}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            ) : (
+              head
+            )}
           </TableCell>
         );
       });
@@ -122,7 +175,7 @@ export function CryptoTable(props: {
         .then((res) => {
           setRows(res.data);
         })
-        .then(()=>{
+        .then(() => {
           setIsLoading(false);
         })
         .catch((err) => {
@@ -169,64 +222,65 @@ export function CryptoTable(props: {
           width: "100%",
         }}
       >
-        <TableContainer
-          component={Paper}
-          sx={{ width: "80%" }}
-        >
+        <TableContainer component={Paper} sx={{ width: "80%" }}>
           <Table stickyHeader sx={{ width: "100%" }}>
             <TableHead>
               <TableRow>{tableHead()}</TableRow>
             </TableHead>
             <TableBody>
-              {Array.isArray(rows) ? rows.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell sx={{ display: "flex" }}>
-                    <Link
-                      key={row.id}
-                      href={"/" + row.id}
-                      style={{
-                        textDecoration: "none",
-                        color: "rgba(0, 0, 0, 0.87)",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Image
-                        src={row.logoURL}
-                        alt=""
-                        width="20"
-                        height="20"
-                      ></Image>
-                      <Typography>{row.name}</Typography>
-                    </Link>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.marketCap.toPrecision(2)}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.price.toPrecision(2)}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>
-                      {row.circulatingSupply.toPrecision(2)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      sx={{ color: row.change24H < 0 ? "red" : "green" }}
-                    >
-                      {Math.abs(row.change24H)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      sx={{ color: row.change7D < 0 ? "red" : "green" }}
-                    >
-                      {Math.abs(row.change7D)}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ))  : <></>}
+              {Array.isArray(rows) ? (
+                rows.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell sx={{ display: "flex" }}>
+                      <Link
+                        key={row.id}
+                        href={"/" + row.id}
+                        style={{
+                          textDecoration: "none",
+                          color: "rgba(0, 0, 0, 0.87)",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Image
+                          src={row.logoURL}
+                          alt=""
+                          width="20"
+                          height="20"
+                        ></Image>
+                        <Typography>{row.name}</Typography>
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.marketCap.toPrecision(2)}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.price.toPrecision(2)}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>
+                        {row.circulatingSupply.toPrecision(2)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        sx={{ color: row.change24H < 0 ? "red" : "green" }}
+                      >
+                        {Math.abs(row.change24H)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        sx={{ color: row.change7D < 0 ? "red" : "green" }}
+                      >
+                        {Math.abs(row.change7D)}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <></>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
