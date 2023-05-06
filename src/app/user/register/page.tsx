@@ -75,7 +75,6 @@ export default function Page() {
   });
 
   function handleUsername(username: string) {
-    console.log(username);
     if (username.length < 8) {
       userNameDispatch({
         type: "shortLength",
@@ -92,7 +91,6 @@ export default function Page() {
   }
 
   function handleEmail(email: string) {
-    console.log(email);
     if (!email.match(EMAIL_REGEX)) {
       emailDispatch({
         type: "invalidEmail",
@@ -109,7 +107,6 @@ export default function Page() {
   }
 
   function handlePassword(password: string) {
-    console.log(password);
     if (password.length < 8) {
       passwordDispatch({
         type: "shortLength",
@@ -126,7 +123,6 @@ export default function Page() {
   }
 
   function handleSubmit() {
-    console.log(username, email, password);
     setIsLoading(true);
     axios({
       url: BASE_URL + "register",
@@ -177,7 +173,7 @@ export default function Page() {
       >
         <Box
           sx={{
-            height: { xs: "40%", sm: "30%" },
+            height: "40%",
             width: { xs: "80%", sm: "70%", md: "60%", lg: "40%" },
             display: "flex",
             flexDirection: "column",

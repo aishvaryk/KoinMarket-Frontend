@@ -26,9 +26,7 @@ type Props = {
 
 export function UserProvider(props: Props) {
   const [user, setUser] = useState<UserData | null>(null);
-  console.log("user provider");
   useEffect(() => {
-    console.log(user, "useEffect useUser");
     var jwt = Cookies.get("jwt");
     if (jwt) {
       axios({
@@ -40,7 +38,6 @@ export function UserProvider(props: Props) {
         },
       })
         .then((res) => {
-          console.log("verified user", res, jwt);
           var user: UserData = {
             id: res.data.id,
             token: jwt ? jwt : "",
@@ -48,7 +45,6 @@ export function UserProvider(props: Props) {
             emailAddress: res.data.emailAddress,
           };
           setUser(user);
-          console.log(user, "user");
         })
         .catch((err) => {
           setUser(null);
