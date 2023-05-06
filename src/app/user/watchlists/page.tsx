@@ -183,7 +183,6 @@ export default function Wishlists() {
           setWatchlists(watchlists);
         })
         .then(() => {
-          console.log(watchlists);
           if (watchlists.length > 0) {
             setActiveWatchlist(watchlists[0]);
           }

@@ -234,76 +234,80 @@ export function CryptoTable(props: {
             <TableBody>
               {Array.isArray(rows) ? (
                 rows.map((row) => (
-                  <>
-                    <TableRow
-                      key={row.id}
-                      onMouseEnter={() => setActiveRow(row.id)}
-                      onMouseLeave={() => setActiveRow(null)}
-                    >
-                      <TableCell sx={{ display: "flex" }}>
-                        <Link
-                          key={row.id}
-                          href={"/" + row.id}
-                          style={{
-                            textDecoration: "none",
-                            color: "rgba(0, 0, 0, 0.87)",
-                            display: "flex",
-                            alignItems: "center",
-                          }}
+                  <TableRow
+                    key={row.id}
+                    onMouseEnter={() => setActiveRow(row.id)}
+                    onMouseLeave={() => setActiveRow(null)}
+                  >
+                    <TableCell sx={{ display: "flex" }}>
+                      <Link
+                        key={row.id}
+                        href={"/" + row.id}
+                        style={{
+                          textDecoration: "none",
+                          color: "rgba(0, 0, 0, 0.87)",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Image
+                          src={row.logoURL}
+                          alt=""
+                          width="20"
+                          height="20"
+                        ></Image>
+                        <Typography>{row.name}</Typography>
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>
+                        {parseFloat(row.marketCap.toFixed(2)).toLocaleString()}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.price.toFixed(2)}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>
+                        {Math.round(row.circulatingSupply).toLocaleString()}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        sx={{ color: row.change24H < 0 ? "red" : "green" }}
+                      >
+                        {Math.abs(row.change24H).toFixed(2)}%
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        sx={{ color: row.change7D < 0 ? "red" : "green" }}
+                      >
+                        {Math.abs(row.change7D).toFixed(2)}%
+                      </Typography>
+                    </TableCell>
+                    {props.listings &&
+                    props.removeTokenCallback &&
+                    activeRow &&
+                    activeRow === row.id ? (
+                      <TableCell>
+                        <IconButton
+                          color="error"
+                          aria-label="remove token"
+                          component="label"
+                          onClick={() =>
+                            props.removeTokenCallback
+                              ? props.removeTokenCallback(row.id)
+                              : () => {}
+                          }
                         >
-                          <Image
-                            src={row.logoURL}
-                            alt=""
-                            width="20"
-                            height="20"
-                          ></Image>
-                          <Typography>{row.name}</Typography>
-                        </Link>
+                          <DeleteOutline />
+                        </IconButton>
                       </TableCell>
-                      <TableCell>
-                        <Typography>{parseFloat(row.marketCap.toFixed(2)).toLocaleString()}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>{row.price.toFixed(2)}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>
-                          {Math.round(row.circulatingSupply).toLocaleString()}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          sx={{ color: row.change24H < 0 ? "red" : "green" }}
-                        >
-                          {Math.abs(row.change24H).toFixed(2)}%
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          sx={{ color: row.change7D < 0 ? "red" : "green" }}
-                        >
-                          {Math.abs(row.change7D).toFixed(2)}%
-                        </Typography>
-                      </TableCell>
-                      {props.listings &&
-                      props.removeTokenCallback &&
-                      activeRow &&
-                      activeRow === row.id ? (
-                        <TableCell>
-                          <IconButton
-                            color="error"
-                            aria-label="remove token"
-                            component="label"
-                            onClick={() => ((props.removeTokenCallback) ? props.removeTokenCallback(row.id) : ()=>{})}
-                          >
-                            <DeleteOutline />
-                          </IconButton>
-                        </TableCell>
-                      ) : (
-                        <></>
-                      )}
-                    </TableRow>
-                  </>
+                    ) : (
+                      <></>
+                    )}
+                  </TableRow>
                 ))
               ) : (
                 <></>
