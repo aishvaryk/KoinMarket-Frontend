@@ -169,7 +169,7 @@ export default function CoinDetails({ params }: { params: { id: number } }) {
           )}
         </Box>
         <Typography variant="body1">{metadata.description}</Typography>
-        {(watchlists.length===0 || user) ? <Box>
+        {(watchlists.length!==0 && user) ? <Box>
             <IconButton onClick={handleOpenWatchlistMenu} sx={{ p: 0 }}>
                <MoreVertIcon />
             </IconButton>
