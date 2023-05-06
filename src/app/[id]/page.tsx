@@ -20,7 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Watchlist } from "../interfaces/Watchlist";
 import { useUser } from "../user/store";
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 export default function CoinDetails({ params }: { params: { id: number } }) {
   const router = useRouter();
@@ -145,53 +145,69 @@ export default function CoinDetails({ params }: { params: { id: number } }) {
             width: { xs: "95%", sm: "85%", md: "85%" },
             justifyContent: "space-between",
             mb: "10px",
-            alignItems:"center"
+            alignItems: "center",
           }}
         >
           <Box
-          sx={{
-            display: "flex",
-            alignItems: "flex-end",
-          }}
-        >
-          <Image
-            src={metadata.logoURL}
-            alt={metadata.symbol}
-            width="48"
-            height="48"
-          ></Image>
-          <Typography variant="h3" sx={{ mb: "-10px" , mr:"5px"}}>
-            {metadata.name}
-          </Typography>
-          <Paper elevation={1} sx={{ display: "flex", alignItems: "center", mr:"5px" }}>
-            <Typography variant="h5">{metadata.symbol}</Typography>
-          </Paper>
-          {metadata.twitter === "#" ? (
-            <></>
-          ) : (
-            <Link href={metadata.twitter} style={{ color: "#00acee ", marginRight:"2px" }}>
-              <Twitter />
-            </Link>
-          )}
-          {metadata.reddit === "#" ? (
-            <></>
-          ) : (
-            <Link href={metadata.reddit}  style={{ color: "#ff4500 ", marginRight:"2px" }}>
-              <Reddit />
-            </Link>
-          )}
-          {metadata.website === "#" ? (
-            <></>
-          ) : (
-            <Link href={metadata.website} style={{ color: "teal" }}>
-              <Language />
-            </Link>
-          )}</Box>
+            sx={{
+              display: "flex",
+              alignItems: "flex-end",
+            }}
+          >
+            <Image
+              src={metadata.logoURL}
+              alt={metadata.symbol}
+              height={48}
+              width={48}
+              sizes="(max-width: 480px) 32px,
+              (max-width: 1200px) 48px,
+              48px"
+            ></Image>
+            <Typography
+              variant="h3"
+              sx={{ fontSize: { xs: "2rem", sm: "3rem" }, mr: "5px", mb:{xs:"0", sm:"-8px"} }}
+            >
+              {metadata.name}
+            </Typography>
+            <Paper
+              elevation={1}
+              sx={{ display: "flex", alignItems: "center", mr: "5px", mb:"4px" }}
+            >
+              <Typography variant="h5"  sx={{ fontSize: { xs: "1.2rem", sm: "1.5rem" }}}>{metadata.symbol}</Typography>
+            </Paper>
+            {metadata.twitter === "#" ? (
+              <></>
+            ) : (
+              <Link
+                href={metadata.twitter}
+                style={{ color: "#00acee ", marginRight: "2px" }}
+              >
+                <Twitter />
+              </Link>
+            )}
+            {metadata.reddit === "#" ? (
+              <></>
+            ) : (
+              <Link
+                href={metadata.reddit}
+                style={{ color: "#ff4500 ", marginRight: "2px" }}
+              >
+                <Reddit />
+              </Link>
+            )}
+            {metadata.website === "#" ? (
+              <></>
+            ) : (
+              <Link href={metadata.website} style={{ color: "teal" }}>
+                <Language />
+              </Link>
+            )}
+          </Box>
 
           {watchlists.length !== 0 && user ? (
             <Box>
               <IconButton onClick={handleOpenWatchlistMenu} sx={{ p: 0 }}>
-                <BookmarkBorderIcon />
+                <BookmarkBorderIcon color = "primary"/>
               </IconButton>
               <Menu
                 sx={{ mt: "45px" }}

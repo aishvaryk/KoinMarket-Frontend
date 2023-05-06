@@ -226,7 +226,10 @@ export function CryptoTable(props: {
           width: "100%",
         }}
       >
-        <TableContainer component={Paper} sx={{ width: "80%" }}>
+        <TableContainer
+          component={Paper}
+          sx={{ width: { xs: "95%", sm: "85%", md: "80%" } }}
+        >
           <Table stickyHeader sx={{ width: "100%" }}>
             <TableHead>
               <TableRow>{tableHead()}</TableRow>
@@ -290,7 +293,7 @@ export function CryptoTable(props: {
                     props.removeTokenCallback &&
                     activeRow &&
                     activeRow === row.id ? (
-                      <TableCell>
+                      <TableCell sx={{padding:"0"}}>
                         <IconButton
                           color="error"
                           aria-label="remove token"
