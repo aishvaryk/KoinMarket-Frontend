@@ -134,6 +134,31 @@ export default function Wishlists() {
       });
   }
 
+  function handleRemoveToken(tokenId: number) {
+    axios({
+      url: BASE_URL + "watchlists/watchlist/"  + activeWatchlist.id + "/remove",
+      method: "PUT",
+      params: {
+        coinId: tokenId
+      },
+      withCredentials: false,
+      headers: {
+        Authorization: "Bearer " + user?.token,
+      },
+    })
+      .then(() => {
+        for (let i =0; i < activeWatchlist.list.length; i++) {
+          if (activeWatchlist.list[i].id === tokenId) {
+            activeWatchlist.list.splice(i, 1);
+          }
+        }
+        setActiveWatchlist( JSON.parse(JSON.stringify(activeWatchlist)));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   useEffect(() => {
     if (user) {
       axios({
@@ -229,7 +254,7 @@ export default function Wishlists() {
               >
                 <DeleteForeverOutlined /> Delete Watchlist
               </Button>
-              <CryptoTable listings={activeWatchlist.list}></CryptoTable>
+              <CryptoTable listings={activeWatchlist.list} removeTokenCallback={handleRemoveToken}></CryptoTable>
             </>
           )}
         </Box>
