@@ -218,7 +218,7 @@ export default function Wishlists() {
                       key={watchlist.id}
                       onClick={handleClick(watchlist)}
                       variant={getChipVariant(watchlist.id)}
-                      sx={{mr:"10px"}}
+                      sx={{ mr: "10px" }}
                       color="primary"
                     />
                   );
@@ -234,18 +234,41 @@ export default function Wishlists() {
                 color="primary"
               />
             </Box>
-            <Box sx={{ width: "100%" ,display:"flex", flexDirection:"column", alignItems:"center", mt:"10px"}}>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mt: "10px",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "80%",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Button
+                  onClick={() => deleteWatchlist(activeWatchlist)}
+                  color="error"
+                  size="small"
+                >
+                  <DeleteForeverOutlined fontSize="small" />{" "}
+                  <Typography variant="caption" sx={{ mb: "-2px" }}>
+                    Delete Watchlist
+                  </Typography>
+                </Button>
+              </Box>
               {activeWatchlist.list.length === 0 ? (
-                <Typography sx={{display:"flex", justifyContent:"center", mt:"20px"}}>Watchlist is empty!</Typography>
+                <Typography
+                  sx={{ display: "flex", justifyContent: "center", mt: "20px" }}
+                >
+                  Watchlist is empty!
+                </Typography>
               ) : (
                 <>
-                  <Box sx={{width: "80%", display:"flex", justifyContent:"flex-end"}}><Button
-                    onClick={() => deleteWatchlist(activeWatchlist)}
-                    color="error"
-                    size="small"
-                  >
-                    <DeleteForeverOutlined fontSize="small"/> <Typography variant="caption" sx={{mb:"-2px"}}>Delete Watchlist</Typography>
-                  </Button></Box>
                   <CryptoTable
                     listings={activeWatchlist.list}
                     removeTokenCallback={handleRemoveToken}
