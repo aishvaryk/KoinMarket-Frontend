@@ -325,7 +325,12 @@ export function CryptoTable(props: {
             page={pageNo}
             onPageChange={handleChangePage}
             rowsPerPage={numOfRows}
-            sx={{ display: isLoading ? "none" : "block" }}
+            sx={{ display: isLoading ? "none" : "block", ".MuiInputBase-root" : {
+              mr: {xs:"12px", sm:"32px"},
+              ml: {xs:"0px" ,sm:"8px"}
+            }, ".MuiTablePagination-actions" :{
+              ml:{xs:"0px", sm:"20px"}
+            } }}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         ) : (
