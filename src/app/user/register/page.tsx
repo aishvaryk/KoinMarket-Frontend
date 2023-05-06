@@ -173,7 +173,7 @@ export default function Page() {
       >
         <Box
           sx={{
-            height: { xs: "40%", sm: "30%" },
+            height: "40%",
             width: { xs: "80%", sm: "70%", md: "60%", lg: "40%" },
             display: "flex",
             flexDirection: "column",

@@ -136,10 +136,10 @@ export default function Wishlists() {
 
   function handleRemoveToken(tokenId: number) {
     axios({
-      url: BASE_URL + "watchlists/watchlist/"  + activeWatchlist.id + "/remove",
+      url: BASE_URL + "watchlists/watchlist/" + activeWatchlist.id + "/remove",
       method: "PUT",
       params: {
-        coinId: tokenId
+        coinId: tokenId,
       },
       withCredentials: false,
       headers: {
@@ -147,12 +147,12 @@ export default function Wishlists() {
       },
     })
       .then(() => {
-        for (let i =0; i < activeWatchlist.list.length; i++) {
+        for (let i = 0; i < activeWatchlist.list.length; i++) {
           if (activeWatchlist.list[i].id === tokenId) {
             activeWatchlist.list.splice(i, 1);
           }
         }
-        setActiveWatchlist( JSON.parse(JSON.stringify(activeWatchlist)));
+        setActiveWatchlist(JSON.parse(JSON.stringify(activeWatchlist)));
       })
       .catch((err) => {
         console.log(err);
@@ -200,63 +200,91 @@ export default function Wishlists() {
   } else {
     return (
       <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: "20px",
+        }}
       >
-        <Box sx={{ display: "flex", justifyContent: "start" }}>
-          {watchlists.length !== 0 ? (
-            watchlists.map((watchlist) => {
-              return (
-                <Chip
-                  label={watchlist.name}
-                  key={watchlist.id}
-                  onClick={handleClick(watchlist)}
-                  variant={getChipVariant(watchlist.id)}
-                />
-              );
-            })
-          ) : (
-            <></>
-          )}
-          <Chip
-            label={"Add Watchlist"}
-            icon={<AddIcon />}
-            variant="outlined"
-            onClick={handleClickOpen}
-          />
-          <Dialog open={open} onClose={handleClose}>
-            <DialogContent>
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Watchlist Name"
-                fullWidth
+        {watchlists.length > 0 ? (
+          <>
+            <Box sx={{ display: "flex", justifyContent: "start" }}>
+              {watchlists.length !== 0 ? (
+                watchlists.map((watchlist) => {
+                  return (
+                    <Chip
+                      label={watchlist.name}
+                      key={watchlist.id}
+                      onClick={handleClick(watchlist)}
+                      variant={getChipVariant(watchlist.id)}
+                      sx={{mr:"10px"}}
+                      color="primary"
+                    />
+                  );
+                })
+              ) : (
+                <></>
+              )}
+              <Chip
+                label={"Add Watchlist"}
+                icon={<AddIcon />}
                 variant="outlined"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  newWatchlistNameHandler(event.target.value);
-                }}
+                onClick={handleClickOpen}
+                color="primary"
               />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button onClick={handleAddWatchlist}>Add</Button>
-            </DialogActions>
-          </Dialog>
-        </Box>
-        <Box sx={{ width: "80%" }}>
-          {activeWatchlist.list.length === 0 ? (
-            <Typography>Watchlist is empty!</Typography>
-          ) : (
-            <>
-              <Button
-                onClick={() => deleteWatchlist(activeWatchlist)}
-                color="error"
-              >
-                <DeleteForeverOutlined /> Delete Watchlist
-              </Button>
-              <CryptoTable listings={activeWatchlist.list} removeTokenCallback={handleRemoveToken}></CryptoTable>
-            </>
-          )}
-        </Box>
+            </Box>
+            <Box sx={{ width: "100%" ,display:"flex", flexDirection:"column", alignItems:"center", mt:"10px"}}>
+              {activeWatchlist.list.length === 0 ? (
+                <Typography sx={{display:"flex", justifyContent:"center", mt:"20px"}}>Watchlist is empty!</Typography>
+              ) : (
+                <>
+                  <Box sx={{width: "80%", display:"flex", justifyContent:"flex-end"}}><Button
+                    onClick={() => deleteWatchlist(activeWatchlist)}
+                    color="error"
+                    size="small"
+                  >
+                    <DeleteForeverOutlined fontSize="small"/> <Typography variant="caption" sx={{mb:"-2px"}}>Delete Watchlist</Typography>
+                  </Button></Box>
+                  <CryptoTable
+                    listings={activeWatchlist.list}
+                    removeTokenCallback={handleRemoveToken}
+                  ></CryptoTable>
+                </>
+              )}
+            </Box>
+          </>
+        ) : (
+          <Box sx={{ display: "flex" }}>
+            <Typography>You don&apos;t have any watchlists! &nbsp;</Typography>
+            <Typography
+              color="primary"
+              onClick={handleClickOpen}
+              sx={{ cursor: "pointer" }}
+            >
+              {" "}
+              Create Now.
+            </Typography>
+          </Box>
+        )}
+        <Dialog open={open} onClose={handleClose}>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Watchlist Name"
+              fullWidth
+              variant="outlined"
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                newWatchlistNameHandler(event.target.value);
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleAddWatchlist}>Add</Button>
+          </DialogActions>
+        </Dialog>
         {alertVisible ? (
           <Alert severity="error" onClose={closeAlert}>
             Internal Server Error
