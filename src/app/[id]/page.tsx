@@ -163,7 +163,7 @@ export default function CoinDetails({ params }: { params: { id: number } }) {
           {metadata.website === "#" ? (
             <></>
           ) : (
-            <Link href={metadata.website} style={{ color: "blue" }}>
+            <Link href={metadata.website} style={{ color: "teal" }}>
               <Language />
             </Link>
           )}
