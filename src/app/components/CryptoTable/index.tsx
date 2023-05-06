@@ -261,28 +261,28 @@ export function CryptoTable(props: {
                         </Link>
                       </TableCell>
                       <TableCell>
-                        <Typography>{row.marketCap.toPrecision(2)}</Typography>
+                        <Typography>{parseFloat(row.marketCap.toFixed(2)).toLocaleString()}</Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography>{row.price.toPrecision(2)}</Typography>
+                        <Typography>{row.price.toFixed(2)}</Typography>
                       </TableCell>
                       <TableCell>
                         <Typography>
-                          {row.circulatingSupply.toPrecision(2)}
+                          {Math.round(row.circulatingSupply).toLocaleString()}
                         </Typography>
                       </TableCell>
                       <TableCell>
                         <Typography
                           sx={{ color: row.change24H < 0 ? "red" : "green" }}
                         >
-                          {Math.abs(row.change24H)}
+                          {Math.abs(row.change24H).toFixed(2)}%
                         </Typography>
                       </TableCell>
                       <TableCell>
                         <Typography
                           sx={{ color: row.change7D < 0 ? "red" : "green" }}
                         >
-                          {Math.abs(row.change7D)}
+                          {Math.abs(row.change7D).toFixed(2)}%
                         </Typography>
                       </TableCell>
                       {props.listings &&
